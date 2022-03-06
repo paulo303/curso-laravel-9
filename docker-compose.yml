@@ -3,11 +3,11 @@ version: "3.7"
 services:
     # image project
     app:
-        container_name: laravel-9
+        container_name: especializati-laravel-9
         build:
             context: .
             dockerfile: Dockerfile
-        # image: especializati/laravel9-app
+        image: especializati/laravel9-app
         restart: unless-stopped
         working_dir: /var/www/
         volumes:
@@ -19,7 +19,7 @@ services:
 
     # nginx
     nginx:
-        container_name: nginx
+        container_name: especializati-nginx
         image: nginx:alpine
         restart: unless-stopped
         ports:
@@ -32,7 +32,7 @@ services:
 
     # db mysql
     mysql:
-        container_name: mysql
+        container_name: especializati-mysql
         image: mysql:5.7.22
         restart: unless-stopped
         environment:
@@ -49,7 +49,7 @@ services:
 
     # queue
     queue:
-        container_name: queue
+        container_name: especializati-queue
         image: especializati/laravel9-app
         restart: unless-stopped
         command: "php artisan queue:work"
@@ -63,7 +63,7 @@ services:
 
     # redis
     redis:
-        container_name: redis
+        container_name: especializati-redis
         image: redis:latest
         networks:
             - laravel-9
