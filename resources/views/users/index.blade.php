@@ -8,14 +8,21 @@
     <a href="{{ route('users.create') }}">Criar novo usuário</a>
 </p>
 
-<ul>
-    @foreach ($users as $user)
-        <li>
-            {{ $user->name }} -
-            {{ $user->email }} |
-            <a href="{{ route('users.edit', $user->id) }}">Editar</a>
-            <a href="{{ route('users.show', $user->id) }}">Detalhes</a>
-        </li>
-    @endforeach
-</ul>
+<form action="" method="get">
+    <input type="text" name="search" id="search" placeholder="Pesquisar">
+    <button type="submit">Pesquisar</button>
+</form>
+
+@forelse ($users as $user)
+    <p>
+        {{ $user->name }} -
+        {{ $user->email }} |
+        <a href="{{ route('users.edit', $user->id) }}">Editar</a>
+        <a href="{{ route('users.show', $user->id) }}">Detalhes</a>
+    </p>
+@empty
+    <p>
+        Nenhum resultado
+    </p>
+@endforelse
 @endsection

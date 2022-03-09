@@ -11,7 +11,8 @@
 <ul>
     <li>{{ $user->name }}</li>
     <li>{{ $user->email }}</li>
-    <li>{{ $user->created_at }}</li>
+    <li>{{ $user->criado_em }}</li>
+    <li>{{ $user->atualizado_em }}</li>
 </ul>
 
 <form action="{{ route('users.destroy', $user->id) }}" method="post">

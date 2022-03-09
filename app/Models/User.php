@@ -2,15 +2,19 @@
 
 namespace App\Models;
 
+use App\Models\BaseModel;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+// use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Auth\Authenticatable;
+// use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 
-class User extends Authenticatable
+class User extends BaseModel implements AuthenticatableContract
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use Authenticatable, HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -53,5 +57,17 @@ class User extends Authenticatable
     public function preference()
     {
         return $this->hasOne(Preference::class);
+    }
+
+    public function getUsers(string|null $search = '')
+    {
+        $users = $this->where(function ($query) use ($search){
+            if ($search) {
+                $query->where('email', $search);
+                $query->orWhere('name', 'LIKE', "%{$search}%");
+            }
+        })->get();
+
+        return $users;
     }
 }

@@ -10,10 +10,18 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function index()
+    protected $model;
+
+    public function __construct(User $user)
+    {
+        $this->model = $user;
+    }
+
+    public function index(Request $request)
     {
         $title = 'Listagem dos Usuários';
-        $users = User::all();
+
+        $users = $this->model->getUsers($request->search);
 
         return view('users.index', compact([
             'title',
@@ -23,8 +31,8 @@ class UserController extends Controller
 
     public function show($id)
     {
-        // $user = User::findOrFail($id); // pra API
-        if (!$user = User::getUser($id))
+        // $user = $this->model->findOrFail($id); // pra API
+        if (!$user = $this->model->getUser($id))
             return redirect()->route('users.index');
 
         $title = 'Dados do Usuário ' . $user->name;
@@ -50,7 +58,7 @@ class UserController extends Controller
             $data = $request->all();
             $data['password'] = bcrypt($request->password);
 
-            $user = User::create($data);
+            $user = $this->model->create($data);
 
             Preference::create([
                 'user_id' => $user->id
@@ -71,7 +79,7 @@ class UserController extends Controller
 
     public function edit($id)
     {
-        if (!$user = User::getUser($id))
+        if (!$user = $this->model->getUser($id))
             return redirect()->route('users.index');
 
         $title = 'Editar o Usuário ' . $user->name;
@@ -79,12 +87,13 @@ class UserController extends Controller
         return view('users.edit', compact('user'));
     }
 
-    public function update(StoreUpdateUserFormRequest $request, $id)
+    // public function update(StoreUpdateUserFormRequest $request, $id)
+    public function update(Request $request, $id)
     {
         DB::beginTransaction();
 
         try {
-            if (!$user = User::getUser($id))
+            if (!$user = $this->model->getUser($id))
                 return redirect()->route('users.index');
 
             $data = $request->only([
@@ -115,7 +124,7 @@ class UserController extends Controller
         DB::beginTransaction();
 
         try {
-            if (!$user = User::getUser($id))
+            if (!$user = $this->model->getUser($id))
                 return redirect()->route('users.index');
 
             $user->preference()->delete();

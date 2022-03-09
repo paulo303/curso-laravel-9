@@ -9,18 +9,9 @@
 </p>
 
 <form action="{{ route('users.store') }}" method="post">
-    @csrf
-    <input type="text" name="name" id="name" placeholder="Nome:" value="{{ old('name') }}">
-    <input type="text" name="email" id="email" placeholder="Email:" value="{{ old('email') }}">
-    <input type="password" name="password" id="password" placeholder="Senha:">
-    <button type="submit">Salvar</button>
+    @include('users._partials.form')
 </form>
 
-@if ($errors->any())
-    <ul class="errors">
-        @foreach ($errors->all() as $error)
-            <li class="error">{{ $error }}</li>
-        @endforeach
-    </ul>
-@endif
+@include('includes.validations-form')
+
 @endsection

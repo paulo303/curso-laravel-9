@@ -29,9 +29,9 @@ Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.de
 
 Route::get('/preferences', function() {
     $user = User::with('preference')->find(1);
-    dd($user);
+
     $data = [
-        'background_color' => '#030',
+        'background_color' => '#0F0',
     ];
 
     if ($user->preference) {
