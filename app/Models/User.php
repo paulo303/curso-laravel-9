@@ -70,4 +70,9 @@ class User extends BaseModel implements AuthenticatableContract
 
         return $users;
     }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'user_id');
+    }
 }
