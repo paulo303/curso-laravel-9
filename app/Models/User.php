@@ -46,6 +46,20 @@ class User extends BaseModel implements AuthenticatableContract
         'email_verified_at' => 'datetime',
     ];
 
+    public function getUsers(string|null $search = '')
+    {
+        $users = $this->where(function ($query) use ($search){
+            if ($search) {
+                $query->where('email', $search);
+                $query->orWhere('name', 'LIKE', "%{$search}%");
+            }
+        })
+            ->with('comments')
+            ->paginate(1);
+
+        return $users;
+    }
+
     public static function getUser($id)
     {
         if (!$user = User::find($id))
@@ -57,18 +71,6 @@ class User extends BaseModel implements AuthenticatableContract
     public function preference()
     {
         return $this->hasOne(Preference::class);
-    }
-
-    public function getUsers(string|null $search = '')
-    {
-        $users = $this->where(function ($query) use ($search){
-            if ($search) {
-                $query->where('email', $search);
-                $query->orWhere('name', 'LIKE', "%{$search}%");
-            }
-        })->get();
-
-        return $users;
     }
 
     public function comments()

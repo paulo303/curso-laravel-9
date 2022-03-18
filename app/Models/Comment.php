@@ -11,13 +11,22 @@ class Comment extends BaseModel
 
     protected $fillable = [
         'user_id',
-        'comment',
+        'body',
         'visible',
     ];
 
     protected $casts = [
         'visible' => 'boolean',
     ];
+
+    public function getComments(string|null $search = '', User $user)
+    {
+        $comments = $user->comments()
+            ->where('body', 'LIKE', "%{$search}%")
+            ->paginate(2);
+
+        return $comments;
+    }
 
     public function user()
     {

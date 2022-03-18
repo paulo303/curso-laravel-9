@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
-            $table->text('comment');
-            $table->boolean('visible')->default(true);
+            $table->text('body');
+            $table->boolean('visible')->default(0);
             $table->timestamps();
         });
     }
