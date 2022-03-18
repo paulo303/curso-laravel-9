@@ -61,6 +61,6 @@
     </tbody>
 </table>
 
-@include('layouts._partials.paginate')
+@include('users._partials.paginate')
 
 @endsection
