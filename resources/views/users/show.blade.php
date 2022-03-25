@@ -8,6 +8,15 @@
 </h1>
 
 <ul>
+    <li>
+        @if ($user->image)
+            <a href="{{ url("storage/{$user->image}") }}" target="_blank">
+                <img src='{{ url("storage/{$user->image}") }}' alt="{{ $user->name }}" width="300">
+            </a>
+        @else
+            <img src="{{ url("images/favicon.ico") }}" alt="{{ $user->name }}" width="300">
+        @endif
+    </li>
     <li>{{ $user->name }}</li>
     <li>{{ $user->email }}</li>
     <li>{{ $user->criado_em }}</li>

@@ -23,7 +23,7 @@ class Comment extends BaseModel
     {
         $comments = $user->comments()
             ->where('body', 'LIKE', "%{$search}%")
-            ->paginate(2);
+            ->paginate(10);
 
         return $comments;
     }

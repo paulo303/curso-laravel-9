@@ -25,6 +25,7 @@ class User extends BaseModel implements AuthenticatableContract
         'name',
         'email',
         'password',
+        'image',
     ];
 
     /**
@@ -55,7 +56,7 @@ class User extends BaseModel implements AuthenticatableContract
             }
         })
             ->with('comments')
-            ->paginate(1);
+            ->paginate(10);
 
         return $users;
     }
