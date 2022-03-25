@@ -4,8 +4,8 @@ namespace Database\Seeders;
 
 use App\Models\Preference;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class UserSeeder extends Seeder
 {
@@ -16,14 +16,14 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        User::create([
+        $user = User::create([
             'name'      => 'Paulo Cavalcanti',
-            'email'     => 'paulo@mxntech.com.br',
+            'email'     => 'paulocavalcanti303@gmail.com',
+            'email_verified_at' => now(),
             'password'  => bcrypt('123456'),
+            'remember_token' => Str::random(10),
         ]);
 
-        Preference::create([
-            'user_id'      => User::first()->id,
-        ]);
+        $user->preferences()->create();
     }
 }

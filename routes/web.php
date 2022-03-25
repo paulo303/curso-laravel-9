@@ -3,7 +3,6 @@
 use App\Http\Controllers\{
     UserController,
     CommentController,
-    PreferenceController,
 };
 use App\Models\Preference;
 use App\Models\User;
@@ -19,20 +18,22 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::middleware('auth')->group(function () {
+    Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
+    Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
+    Route::post('/users/', [UserController::class, 'store'])->name('users.store');
+    Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
+    Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
 
-Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
-Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
-Route::get('/users', [UserController::class, 'index'])->name('users.index');
-Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
-Route::post('/users/', [UserController::class, 'store'])->name('users.store');
-Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
-Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+    Route::get('/users/{id}/comments', [CommentController::class, 'index'])->name('comments.index');
+    Route::get('/users/{id}/comments/create', [CommentController::class, 'create'])->name('comments.create');
+    Route::post('/users/{id}/comments', [CommentController::class, 'store'])->name('comments.store');
+    Route::get('/users/{user}/comments/{id}', [CommentController::class, 'edit'])->name('comments.edit');
+    Route::put('/comments/{id}', [CommentController::class, 'update'])->name('comments.update');
+});
 
-Route::get('/users/{id}/comments', [CommentController::class, 'index'])->name('comments.index');
-Route::get('/users/{id}/comments/create', [CommentController::class, 'create'])->name('comments.create');
-Route::post('/users/{id}/comments', [CommentController::class, 'store'])->name('comments.store');
-Route::get('/users/{user}/comments/{id}', [CommentController::class, 'edit'])->name('comments.edit');
-Route::put('/comments/{id}', [CommentController::class, 'update'])->name('comments.update');
 
 
 Route::get('/preferences', function() {
@@ -45,9 +46,9 @@ Route::get('/preferences', function() {
     if ($user->preference) {
         $user->preference->update($data);
     } else {
-        $user->preference()->create($data);
+        $user->preferences()->create($data);
         // $preference = new Preference($data);
-        // $user->preference()->save($preference);
+        // $user->preferences()->save($preference);
     }
 
     $user->refresh();
@@ -59,3 +60,5 @@ Route::get('/preferences', function() {
 Route::get('/', function () {
     return view('welcome');
 });
+
+require __DIR__.'/auth.php';

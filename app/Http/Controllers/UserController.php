@@ -67,7 +67,7 @@ class UserController extends Controller
 
             $user = $this->model->create($data);
 
-            $user->preference()->create();
+            $user->preferences()->create();
 
             DB::commit();
 
@@ -142,7 +142,7 @@ class UserController extends Controller
             if (!$user = $this->model->getUser($id))
                 return redirect()->route('users.index');
 
-            $user->preference()->delete();
+            $user->preferences()->delete();
             $user->delete();
 
             DB::commit();

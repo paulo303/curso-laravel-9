@@ -69,7 +69,7 @@ class User extends BaseModel implements AuthenticatableContract
         return $user;
     }
 
-    public function preference()
+    public function preferences()
     {
         return $this->hasOne(Preference::class);
     }
